@@ -89,11 +89,11 @@ function App() {
         {/* Scrollable Area */}
         <div className="flex-1 overflow-y-auto scroll-smooth relative">
           <div className="max-w-4xl mx-auto">
-             {/* Intro (Only for feed on mobile) */}
+             {/* Intro Header */}
              {currentView === 'feed' && (
-               <div className="pt-8 pb-2 px-4 md:px-8 lg:hidden">
-                  <h2 className="text-2xl font-serif font-bold text-stone-800">Good Morning, Alice.</h2>
-                  <p className="text-stone-500">Here is what your circle is reading this week.</p>
+               <div className="pt-8 pb-4 px-4 md:px-8">
+                  <h2 className="text-2xl md:text-3xl font-serif font-bold text-stone-800 mb-1">Good Morning, Alice.</h2>
+                  <p className="text-stone-500 text-base md:text-lg">Here is what your circle is reading this week.</p>
                </div>
              )}
 

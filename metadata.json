@@ -1,0 +1,5 @@
+{
+  "name": "Fresco",
+  "description": "A social curation app that displays a weekly feed of articles and videos consumed by your friends.",
+  "requestFramePermissions": []
+}

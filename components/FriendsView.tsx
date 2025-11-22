@@ -7,11 +7,15 @@ interface UserGridProps {
   title: string;
   users: User[];
   type: 'following' | 'follower' | 'recommended';
+  onUserClick?: (user: User) => void;
 }
 
-const UserCard: React.FC<{ user: User; type: 'following' | 'follower' | 'recommended' }> = ({ user, type }) => {
+const UserCard: React.FC<{ user: User; type: 'following' | 'follower' | 'recommended'; onClick?: () => void }> = ({ user, type, onClick }) => {
   return (
-    <div className="flex flex-col items-center p-4 bg-white rounded-xl border border-fresco-100 shadow-sm hover:shadow-md transition-all group">
+    <div 
+      onClick={onClick}
+      className="flex flex-col items-center p-4 bg-white rounded-xl border border-fresco-100 shadow-sm hover:shadow-md transition-all group cursor-pointer"
+    >
       <div className="relative mb-3">
         <img 
           src={user.avatarUrl} 
@@ -35,14 +39,16 @@ const UserCard: React.FC<{ user: User; type: 'following' | 'follower' | 'recomme
             ? 'bg-stone-100 text-stone-600 hover:bg-stone-200'
             : 'bg-stone-800 text-white hover:bg-stone-900'
         }
-      `}>
+      `}
+      onClick={(e) => e.stopPropagation()} // Prevent card click when button is clicked
+      >
         {type === 'following' ? 'Following' : type === 'follower' ? 'Follow Back' : 'Follow'}
       </button>
     </div>
   );
 };
 
-const Section: React.FC<UserGridProps> = ({ title, users, type }) => (
+const Section: React.FC<UserGridProps> = ({ title, users, type, onUserClick }) => (
   <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="flex items-center justify-between mb-6 px-1">
        <h2 className="text-xl font-serif font-bold text-stone-800 flex items-center gap-2">
@@ -57,13 +63,18 @@ const Section: React.FC<UserGridProps> = ({ title, users, type }) => (
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {users.map(user => (
-        <UserCard key={user.id} user={user} type={type} />
+        <UserCard 
+          key={user.id} 
+          user={user} 
+          type={type} 
+          onClick={() => onUserClick && onUserClick(user)}
+        />
       ))}
     </div>
   </div>
 );
 
-export const FriendsView: React.FC = () => {
+export const FriendsView: React.FC<{ onUserClick?: (user: User) => void }> = ({ onUserClick }) => {
   return (
     <div className="max-w-5xl mx-auto px-4 md:px-8 py-8 pb-20">
       <div className="mb-8">
@@ -75,12 +86,14 @@ export const FriendsView: React.FC = () => {
         title="Following" 
         users={FRIEND_LISTS.following} 
         type="following" 
+        onUserClick={onUserClick}
       />
       
       <Section 
         title="Followers" 
         users={FRIEND_LISTS.followers} 
         type="follower" 
+        onUserClick={onUserClick}
       />
       
       <div className="p-6 bg-orange-50/50 rounded-2xl border border-orange-100">
@@ -88,6 +101,7 @@ export const FriendsView: React.FC = () => {
           title="Suggested for you" 
           users={FRIEND_LISTS.recommended} 
           type="recommended" 
+          onUserClick={onUserClick}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { FeedItem, ContentType, User } from './types';
+import { FeedItem, ContentType, User, Collection } from './types';
 
 // Mock Users
 export const USERS: Record<string, User> = {
@@ -7,24 +7,28 @@ export const USERS: Record<string, User> = {
     name: 'Alice Chen',
     handle: '@alice_c',
     avatarUrl: 'https://picsum.photos/id/64/200/200',
+    bio: 'Product Designer & Tea Enthusiast. Curating the cozy web.',
   },
   marcus: {
     id: 'u2',
     name: 'Marcus Johnson',
     handle: '@marcus_j',
     avatarUrl: 'https://picsum.photos/id/91/200/200',
+    bio: 'Filmmaker based in NY. Obsessed with physics and cinematography.',
   },
   elena: {
     id: 'u3',
     name: 'Elena Rodriguez',
     handle: '@elena_r',
     avatarUrl: 'https://picsum.photos/id/129/200/200',
+    bio: 'Architect. Looking for patterns in chaos.',
   },
   david: {
     id: 'u4',
     name: 'David Kim',
     handle: '@dkim',
     avatarUrl: 'https://picsum.photos/id/177/200/200',
+    bio: 'Coffee roaster and frontend dev.',
   },
   sarah: {
     id: 'u5',
@@ -66,6 +70,24 @@ export const FRIEND_LISTS = {
     handle: '@casey',
     avatarUrl: 'https://picsum.photos/id/823/200/200'
   }]
+};
+
+// Mock Collections (Favorites)
+export const USER_COLLECTIONS: Record<string, Collection[]> = {
+  'u1': [ // Alice
+    { id: 'c1', title: 'Design Systems', description: 'Best reads on scalable UI', coverUrl: 'https://picsum.photos/id/1/600/400', itemCount: 12, updatedAt: '2 days ago' },
+    { id: 'c2', title: 'Sunday Morning', description: 'Quiet, long-form essays', coverUrl: 'https://picsum.photos/id/2/600/400', itemCount: 8, updatedAt: '1 week ago' }
+  ],
+  'u2': [ // Marcus
+    { id: 'c3', title: 'Cinematography 101', description: 'Visual breakdowns', coverUrl: 'https://picsum.photos/id/3/600/400', itemCount: 24, updatedAt: '3 days ago' },
+    { id: 'c4', title: 'Space & Time', description: 'Physics for poets', coverUrl: 'https://picsum.photos/id/4/600/400', itemCount: 15, updatedAt: '2 weeks ago' }
+  ],
+  'u3': [ // Elena
+    { id: 'c5', title: 'Brutalist Architecture', coverUrl: 'https://picsum.photos/id/5/600/400', itemCount: 7, updatedAt: '1 day ago' }
+  ],
+  'u4': [ // David
+    { id: 'c6', title: 'Coffee Science', coverUrl: 'https://picsum.photos/id/6/600/400', itemCount: 42, updatedAt: '5 days ago' }
+  ]
 };
 
 // Helper to generate past dates

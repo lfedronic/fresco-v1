@@ -1,10 +1,11 @@
 import React from 'react';
-import { FeedItem as FeedItemType, GroupedFeed } from '../types';
+import { FeedItem as FeedItemType, GroupedFeed, User } from '../types';
 import { FeedItem } from './FeedItem';
 
 interface Props {
   items: FeedItemType[];
   emptyMessage?: string;
+  onUserClick?: (user: User) => void;
 }
 
 // Helper to group items by week
@@ -40,7 +41,7 @@ const groupItemsByWeek = (items: FeedItemType[]): GroupedFeed[] => {
   }));
 };
 
-export const Feed: React.FC<Props> = ({ items, emptyMessage = "No stories found." }) => {
+export const Feed: React.FC<Props> = ({ items, emptyMessage = "No stories found.", onUserClick }) => {
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center px-4">
@@ -69,7 +70,7 @@ export const Feed: React.FC<Props> = ({ items, emptyMessage = "No stories found.
 
           <div className="px-4 md:px-8">
             {group.items.map(item => (
-              <FeedItem key={item.id} item={item} />
+              <FeedItem key={item.id} item={item} onUserClick={onUserClick} />
             ))}
           </div>
         </div>

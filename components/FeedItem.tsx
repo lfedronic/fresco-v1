@@ -1,12 +1,13 @@
 import React from 'react';
-import { FeedItem as FeedItemType, ContentType } from '../types';
+import { FeedItem as FeedItemType, ContentType, User } from '../types';
 import { Play, BookOpen, ExternalLink, Clock, Share2 } from 'lucide-react';
 
 interface Props {
   item: FeedItemType;
+  onUserClick?: (user: User) => void;
 }
 
-export const FeedItem: React.FC<Props> = ({ item }) => {
+export const FeedItem: React.FC<Props> = ({ item, onUserClick }) => {
   const isArticle = item.type === ContentType.ARTICLE;
 
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -15,6 +16,13 @@ export const FeedItem: React.FC<Props> = ({ item }) => {
     hour: 'numeric',
     minute: 'numeric',
   }).format(new Date(item.timestamp));
+
+  const handleUserClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onUserClick) {
+      onUserClick(item.consumedBy);
+    }
+  };
 
   return (
     <div className="group relative mb-8 w-full max-w-3xl mx-auto transition-all duration-300 ease-out">
@@ -25,7 +33,7 @@ export const FeedItem: React.FC<Props> = ({ item }) => {
 
       {/* User Attribution Header */}
       <div className="flex items-center gap-3 mb-3">
-        <button className="relative group/avatar">
+        <button onClick={handleUserClick} className="relative group/avatar">
           <img 
             src={item.consumedBy.avatarUrl} 
             alt={item.consumedBy.name}
@@ -34,7 +42,9 @@ export const FeedItem: React.FC<Props> = ({ item }) => {
         </button>
         <div className="flex flex-col">
           <span className="text-sm text-stone-800 font-medium">
-            <span className="font-bold hover:text-fresco-800 cursor-pointer transition-colors">{item.consumedBy.name}</span> 
+            <button onClick={handleUserClick} className="font-bold hover:text-fresco-800 cursor-pointer transition-colors hover:underline">
+              {item.consumedBy.name}
+            </button> 
             <span className="text-stone-500 font-normal">
               {isArticle ? ' read' : ' watched'}
             </span>

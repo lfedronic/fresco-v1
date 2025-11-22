@@ -8,6 +8,7 @@ export interface User {
   name: string;
   avatarUrl: string;
   handle: string;
+  bio?: string;
 }
 
 export interface FeedItem {
@@ -21,6 +22,15 @@ export interface FeedItem {
   consumedBy: User;
   timestamp: string; // ISO date string
   readTimeOrDuration?: string; // "5 min read" or "12:30"
+}
+
+export interface Collection {
+  id: string;
+  title: string;
+  description?: string;
+  coverUrl: string;
+  itemCount: number;
+  updatedAt: string;
 }
 
 export type GroupedFeed = {

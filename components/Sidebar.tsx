@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, Users, Heart, User, PlusCircle, Settings } from 'lucide-react';
+import { Home, Users, Grid, User, PlusCircle, Settings, Sparkles } from 'lucide-react';
 
-export type ViewType = 'feed' | 'friends' | 'favorites' | 'you';
+export type ViewType = 'feed' | 'friends' | 'collections' | 'you' | 'recs';
 
 interface Props {
   currentView: ViewType;
@@ -9,11 +9,12 @@ interface Props {
 }
 
 export const Sidebar: React.FC<Props> = ({ currentView, onChangeView }) => {
-  const navItems: { id: ViewType; icon: any; label: string }[] = [
+  const navItems: { id: ViewType; icon: any; label: string; disabled?: boolean; subLabel?: string }[] = [
     { id: 'feed', icon: Home, label: 'Feed' },
     { id: 'friends', icon: Users, label: 'Friends' },
-    { id: 'favorites', icon: Heart, label: 'Favorites' },
+    { id: 'collections', icon: Grid, label: 'Collections' },
     { id: 'you', icon: User, label: 'You' },
+    { id: 'recs', icon: Sparkles, label: 'Recs', disabled: true, subLabel: 'Coming soon' },
   ];
 
   return (
@@ -29,20 +30,32 @@ export const Sidebar: React.FC<Props> = ({ currentView, onChangeView }) => {
         <ul className="space-y-2">
           {navItems.map((item) => {
             const isActive = currentView === item.id;
+            const isDisabled = item.disabled;
+
             return (
               <li key={item.id}>
                 <button 
-                  onClick={() => onChangeView(item.id)}
+                  onClick={() => !isDisabled && onChangeView(item.id)}
+                  disabled={isDisabled}
                   className={`
-                    w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                    ${isActive 
-                      ? 'bg-white shadow-sm text-stone-900 font-medium' 
-                      : 'text-stone-500 hover:bg-fresco-100 hover:text-stone-800'
+                    w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200
+                    ${isDisabled 
+                      ? 'opacity-50 cursor-not-allowed hover:bg-transparent' 
+                      : isActive 
+                        ? 'bg-white shadow-sm text-stone-900 font-medium' 
+                        : 'text-stone-500 hover:bg-fresco-100 hover:text-stone-800'
                     }
                   `}
                 >
-                  <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-stone-400'}`} />
-                  {item.label}
+                  <div className="flex items-center gap-3">
+                    <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-stone-400'}`} />
+                    {item.label}
+                  </div>
+                  {item.subLabel && (
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                      {item.subLabel}
+                    </span>
+                  )}
                 </button>
               </li>
             );

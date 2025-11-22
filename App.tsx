@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Sidebar, ViewType } from './components/Sidebar';
 import { Feed } from './components/Feed';
 import { FriendsView } from './components/FriendsView';
+import { CollectionsView } from './components/CollectionsView';
 import { FilterBar } from './components/FilterBar';
 import { MobileHeader } from './components/MobileHeader';
 import { UserProfile } from './components/UserProfile';
@@ -55,6 +56,12 @@ function App() {
     }
   };
 
+  // Specific handler to navigate to collections from profile
+  const handleNavigateFromProfile = (view: 'collections') => {
+    setCurrentView('collections');
+    window.scrollTo(0,0);
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'feed':
@@ -76,22 +83,15 @@ function App() {
         );
       case 'friends':
         return <FriendsView onUserClick={handleUserClick} />;
-      case 'favorites':
-        return (
-          <div className="flex flex-col items-center justify-center h-[60vh] text-center px-4">
-            <div className="w-16 h-16 bg-red-50 text-red-400 rounded-full flex items-center justify-center mb-4">
-              <span className="text-3xl">❤️</span>
-            </div>
-            <h2 className="text-xl font-serif font-bold text-stone-800 mb-2">Your Favorites</h2>
-            <p className="text-stone-400 max-w-sm">Collections of your favorite reads and watches are coming soon.</p>
-          </div>
-        );
+      case 'collections':
+        return <CollectionsView />;
       case 'profile':
         if (!selectedUser) return null;
         return (
           <UserProfile 
             user={selectedUser} 
-            isCurrentUser={selectedUser.id === USERS.alice.id} 
+            isCurrentUser={selectedUser.id === USERS.alice.id}
+            onNavigate={handleNavigateFromProfile}
           />
         );
       default:
@@ -100,9 +100,6 @@ function App() {
   };
 
   // Determine which sidebar item is active
-  // If we are viewing "profile" and the user is Alice, highlight 'you'.
-  // If we are viewing "profile" and user is NOT Alice, no sidebar item is strictly active (or maybe 'friends'?)
-  // For simplicity, we'll keep the sidebar clean if it's a friend profile.
   const getSidebarActiveView = (): ViewType => {
     if (currentView === 'profile') {
       return selectedUser?.id === USERS.alice.id ? 'you' : 'friends'; 

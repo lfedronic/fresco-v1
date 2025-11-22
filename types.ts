@@ -31,6 +31,7 @@ export interface Collection {
   coverUrl: string;
   itemCount: number;
   updatedAt: string;
+  isPrivate?: boolean;
 }
 
 export type GroupedFeed = {

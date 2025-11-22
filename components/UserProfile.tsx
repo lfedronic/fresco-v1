@@ -7,10 +7,19 @@ import { Layers, Grid, Link2, MapPin, Calendar } from 'lucide-react';
 interface Props {
   user: User;
   isCurrentUser?: boolean;
+  onNavigate?: (view: 'collections') => void;
 }
 
-export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false }) => {
+export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false, onNavigate }) => {
   const [activeTab, setActiveTab] = useState<'activity' | 'collections'>('activity');
+
+  const handleTabChange = (tab: 'activity' | 'collections') => {
+    if (tab === 'collections' && isCurrentUser && onNavigate) {
+      onNavigate('collections');
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   // Filter feed for this user
   const userFeed = MOCK_FEED.filter(item => item.consumedBy.id === user.id)
@@ -76,7 +85,7 @@ export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false }) =>
           {/* Tabs */}
           <div className="flex items-center gap-8 border-t border-transparent">
             <button 
-              onClick={() => setActiveTab('activity')}
+              onClick={() => handleTabChange('activity')}
               className={`
                 flex items-center gap-2 pb-3 pt-2 border-b-2 text-sm font-medium transition-all
                 ${activeTab === 'activity' 
@@ -89,7 +98,7 @@ export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false }) =>
               Activity
             </button>
             <button 
-              onClick={() => setActiveTab('collections')}
+              onClick={() => handleTabChange('collections')}
               className={`
                 flex items-center gap-2 pb-3 pt-2 border-b-2 text-sm font-medium transition-all
                 ${activeTab === 'collections' 

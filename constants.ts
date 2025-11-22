@@ -6,26 +6,66 @@ export const USERS: Record<string, User> = {
     id: 'u1',
     name: 'Alice Chen',
     handle: '@alice_c',
-    avatarUrl: 'https://picsum.photos/id/64/100/100',
+    avatarUrl: 'https://picsum.photos/id/64/200/200',
   },
   marcus: {
     id: 'u2',
     name: 'Marcus Johnson',
     handle: '@marcus_j',
-    avatarUrl: 'https://picsum.photos/id/91/100/100',
+    avatarUrl: 'https://picsum.photos/id/91/200/200',
   },
   elena: {
     id: 'u3',
     name: 'Elena Rodriguez',
     handle: '@elena_r',
-    avatarUrl: 'https://picsum.photos/id/129/100/100',
+    avatarUrl: 'https://picsum.photos/id/129/200/200',
   },
   david: {
     id: 'u4',
     name: 'David Kim',
     handle: '@dkim',
-    avatarUrl: 'https://picsum.photos/id/177/100/100',
+    avatarUrl: 'https://picsum.photos/id/177/200/200',
+  },
+  sarah: {
+    id: 'u5',
+    name: 'Sarah Jenkins',
+    handle: '@sarah_j',
+    avatarUrl: 'https://picsum.photos/id/338/200/200',
+  },
+  lucas: {
+    id: 'u6',
+    name: 'Lucas P.',
+    handle: '@lucas_arts',
+    avatarUrl: 'https://picsum.photos/id/342/200/200',
+  },
+  nina: {
+    id: 'u7',
+    name: 'Nina Williams',
+    handle: '@nina_w',
+    avatarUrl: 'https://picsum.photos/id/334/200/200',
+  },
+  tomek: {
+    id: 'u8',
+    name: 'Tomek B.',
+    handle: '@tomek_b',
+    avatarUrl: 'https://picsum.photos/id/449/200/200',
   }
+};
+
+export const FRIEND_LISTS = {
+  following: [USERS.marcus, USERS.elena, USERS.david, USERS.sarah],
+  followers: [USERS.marcus, USERS.david, USERS.lucas, USERS.nina],
+  recommended: [USERS.tomek, {
+    id: 'u9',
+    name: 'Jordan Lee',
+    handle: '@j_lee',
+    avatarUrl: 'https://picsum.photos/id/550/200/200'
+  }, {
+    id: 'u10', 
+    name: 'Casey Neistat',
+    handle: '@casey',
+    avatarUrl: 'https://picsum.photos/id/823/200/200'
+  }]
 };
 
 // Helper to generate past dates

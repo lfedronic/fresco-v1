@@ -1,11 +1,19 @@
 import React from 'react';
-import { Home, Users, Bookmark, Settings, PlusCircle, LogOut } from 'lucide-react';
+import { Home, Users, Heart, User, PlusCircle, Settings } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
-  const navItems = [
-    { icon: Home, label: 'Feed', active: true },
-    { icon: Users, label: 'Friends', active: false },
-    { icon: Bookmark, label: 'Saved', active: false },
+export type ViewType = 'feed' | 'friends' | 'favorites' | 'you';
+
+interface Props {
+  currentView: ViewType;
+  onChangeView: (view: ViewType) => void;
+}
+
+export const Sidebar: React.FC<Props> = ({ currentView, onChangeView }) => {
+  const navItems: { id: ViewType; icon: any; label: string }[] = [
+    { id: 'feed', icon: Home, label: 'Feed' },
+    { id: 'friends', icon: Users, label: 'Friends' },
+    { id: 'favorites', icon: Heart, label: 'Favorites' },
+    { id: 'you', icon: User, label: 'You' },
   ];
 
   return (
@@ -19,23 +27,26 @@ export const Sidebar: React.FC = () => {
 
       <nav className="flex-1">
         <ul className="space-y-2">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a 
-                href="#" 
-                className={`
-                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                  ${item.active 
-                    ? 'bg-white shadow-sm text-stone-900 font-medium' 
-                    : 'text-stone-500 hover:bg-fresco-100 hover:text-stone-800'
-                  }
-                `}
-              >
-                <item.icon className={`w-5 h-5 ${item.active ? 'text-orange-500' : 'text-stone-400'}`} />
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const isActive = currentView === item.id;
+            return (
+              <li key={item.id}>
+                <button 
+                  onClick={() => onChangeView(item.id)}
+                  className={`
+                    w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+                    ${isActive 
+                      ? 'bg-white shadow-sm text-stone-900 font-medium' 
+                      : 'text-stone-500 hover:bg-fresco-100 hover:text-stone-800'
+                    }
+                  `}
+                >
+                  <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-stone-400'}`} />
+                  {item.label}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
@@ -52,7 +63,7 @@ export const Sidebar: React.FC = () => {
               alt="My Profile" 
               className="w-9 h-9 rounded-full border border-white shadow-sm"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col text-left">
               <span className="text-sm font-bold text-stone-800">Alice Chen</span>
               <span className="text-xs text-stone-400">@alice_c</span>
             </div>

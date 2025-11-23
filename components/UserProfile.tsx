@@ -8,12 +8,23 @@ interface Props {
   user: User;
   isCurrentUser?: boolean;
   onNavigate?: (view: 'collections') => void;
+  collections?: Collection[]; // Accept dynamic collections
+  onCollectionClick?: (collection: Collection) => void;
 }
 
-export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false, onNavigate }) => {
+export const UserProfile: React.FC<Props> = ({ 
+  user, 
+  isCurrentUser = false, 
+  onNavigate, 
+  collections: propCollections,
+  onCollectionClick
+}) => {
   const [activeTab, setActiveTab] = useState<'activity' | 'collections'>('activity');
 
   const handleTabChange = (tab: 'activity' | 'collections') => {
+    // If it's the current user clicking collections, redirect to the main Collections Management view
+    // NOT the profile collections list, which is read-onlyish.
+    // Actually per user request: "clicking the collections subtab within the user profile tab (if its the user themself) should also navigate to this collections creation page."
     if (tab === 'collections' && isCurrentUser && onNavigate) {
       onNavigate('collections');
     } else {
@@ -25,7 +36,8 @@ export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false, onNa
   const userFeed = MOCK_FEED.filter(item => item.consumedBy.id === user.id)
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
-  const collections = USER_COLLECTIONS[user.id] || [];
+  // Use passed collections if available (e.g. for logged in user), otherwise fallback to constant
+  const collections = propCollections || USER_COLLECTIONS[user.id] || [];
 
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -135,7 +147,11 @@ export const UserProfile: React.FC<Props> = ({ user, isCurrentUser = false, onNa
                 </div>
              ) : (
                collections.map(col => (
-                 <div key={col.id} className="group cursor-pointer flex flex-col gap-3">
+                 <div 
+                    key={col.id} 
+                    onClick={() => onCollectionClick && onCollectionClick(col)}
+                    className="group cursor-pointer flex flex-col gap-3"
+                  >
                     <div className="relative aspect-[3/2] rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                        <img 
                         src={col.coverUrl} 

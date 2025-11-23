@@ -32,6 +32,7 @@ export interface Collection {
   itemCount: number;
   updatedAt: string;
   isPrivate?: boolean;
+  items?: FeedItem[]; // Content inside the collection
 }
 
 export type GroupedFeed = {

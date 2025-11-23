@@ -3,20 +3,27 @@ import { Sidebar, ViewType } from './components/Sidebar';
 import { Feed } from './components/Feed';
 import { FriendsView } from './components/FriendsView';
 import { CollectionsView } from './components/CollectionsView';
+import { CollectionDetail } from './components/CollectionDetail';
 import { FilterBar } from './components/FilterBar';
 import { MobileHeader } from './components/MobileHeader';
 import { UserProfile } from './components/UserProfile';
-import { MOCK_FEED, USERS } from './constants';
-import { ContentType, User } from './types';
+import { MOCK_FEED, USERS, USER_COLLECTIONS } from './constants';
+import { ContentType, User, Collection } from './types';
 
-// Extended ViewType to include 'profile'
-type ExtendedViewType = ViewType | 'profile';
+// Extended ViewType to include 'profile' and 'collection-detail'
+type ExtendedViewType = ViewType | 'profile' | 'collection-detail';
 
 function App() {
   const [currentView, setCurrentView] = useState<ExtendedViewType>('feed');
   const [activeFilter, setActiveFilter] = useState<ContentType | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null);
+  
+  // Global Collections State (initialized with mocks)
+  // In a real app, this would store all collections, but here we focus on 'alice' (current user) modifications
+  // We maintain a map of userId -> Collection[]
+  const [allCollections, setAllCollections] = useState<Record<string, Collection[]>>(USER_COLLECTIONS);
 
   // Filter and Search Logic for Feed
   const filteredItems = useMemo(() => {
@@ -56,10 +63,40 @@ function App() {
     }
   };
 
-  // Specific handler to navigate to collections from profile
   const handleNavigateFromProfile = (view: 'collections') => {
     setCurrentView('collections');
     window.scrollTo(0,0);
+  };
+  
+  // Collections Handlers
+  const handleCreateCollection = (newCollection: Collection) => {
+     const userId = USERS.alice.id;
+     setAllCollections(prev => ({
+       ...prev,
+       [userId]: [newCollection, ...(prev[userId] || [])]
+     }));
+     // Navigate directly to the new collection detail view
+     handleCollectionClick(newCollection);
+  };
+
+  const handleCollectionClick = (collection: Collection) => {
+    setSelectedCollection(collection);
+    setCurrentView('collection-detail');
+    window.scrollTo(0,0);
+  };
+
+  const handleUpdateCollection = (updatedCollection: Collection) => {
+    // Update in global state
+    // We need to find which user owns this collection. For simplicity, assuming it's Alice or we just search all.
+    // Since we only really edit Alice's collections in this demo:
+    const userId = USERS.alice.id;
+    
+    setAllCollections(prev => ({
+      ...prev,
+      [userId]: (prev[userId] || []).map(c => c.id === updatedCollection.id ? updatedCollection : c)
+    }));
+    
+    setSelectedCollection(updatedCollection);
   };
 
   const renderContent = () => {
@@ -84,7 +121,22 @@ function App() {
       case 'friends':
         return <FriendsView onUserClick={handleUserClick} />;
       case 'collections':
-        return <CollectionsView />;
+        return (
+          <CollectionsView 
+            collections={allCollections[USERS.alice.id] || []} 
+            onCreateCollection={handleCreateCollection}
+            onCollectionClick={handleCollectionClick}
+          />
+        );
+      case 'collection-detail':
+        if (!selectedCollection) return null;
+        return (
+          <CollectionDetail 
+            collection={selectedCollection} 
+            onBack={() => setCurrentView('collections')} 
+            onUpdateCollection={handleUpdateCollection}
+          />
+        );
       case 'profile':
         if (!selectedUser) return null;
         return (
@@ -92,6 +144,9 @@ function App() {
             user={selectedUser} 
             isCurrentUser={selectedUser.id === USERS.alice.id}
             onNavigate={handleNavigateFromProfile}
+            // Pass the dynamic collections list for this user from global state
+            collections={allCollections[selectedUser.id]}
+            onCollectionClick={handleCollectionClick}
           />
         );
       default:
@@ -103,6 +158,9 @@ function App() {
   const getSidebarActiveView = (): ViewType => {
     if (currentView === 'profile') {
       return selectedUser?.id === USERS.alice.id ? 'you' : 'friends'; 
+    }
+    if (currentView === 'collection-detail') {
+      return 'collections';
     }
     return currentView as ViewType;
   };

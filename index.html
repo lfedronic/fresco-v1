@@ -12,26 +12,27 @@
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
               serif: ['Merriweather', 'serif'],
+              mono: ['"Courier Prime"', 'monospace'],
             },
             colors: {
               fresco: {
-                50: '#fdfcfb',
-                100: '#fbf7f3',
-                200: '#f5ebe0',
-                300: '#eadbc6',
-                400: '#e0c4a3',
-                500: '#d4a97e',
-                600: '#c89062',
-                700: '#a7734e',
-                800: '#895e43',
-                900: '#6f4e3a',
+                50: '#F9F8F4', // Yellowed Paper / Off-white
+                100: '#F0EFE9',
+                200: '#E2E0D6',
+                300: '#D1CEC0',
+                400: '#B6B2A3',
+                500: '#989386',
+                600: '#7B776D',
+                700: '#5E5B53',
+                800: '#333333', // Dark charcoal borders
+                900: '#1C1917', // Nearly black text
               }
             }
           },
         },
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <script type="importmap">
 {
   "imports": {
@@ -42,6 +43,26 @@
   }
 }
 </script>
+<style>
+  /* Noise Texture for Paper Effect */
+  .texture-paper {
+    position: relative;
+    background-color: #F9F8F4;
+  }
+  .texture-paper::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 50;
+    filter: contrast(300%) brightness(100%);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+</style>
 </head>
   <body>
     <div id="root"></div>

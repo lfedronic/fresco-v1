@@ -69,91 +69,90 @@ export const CollectionDetail: React.FC<Props> = ({ collection, onBack, onUpdate
       {/* Navigation */}
       <button 
         onClick={onBack}
-        className="group flex items-center gap-2 text-stone-500 hover:text-stone-800 mb-6 transition-colors"
+        className="group flex items-center gap-2 text-stone-500 hover:text-stone-900 mb-6 transition-colors font-mono text-xs uppercase font-bold tracking-widest"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        <span className="font-medium">Back to Collections</span>
+        <span>Back to Collections</span>
       </button>
 
       {/* Header */}
-      <div className="relative bg-white rounded-2xl p-8 border border-stone-200 shadow-sm mb-8 overflow-hidden">
+      <div className="relative bg-white p-8 border border-stone-900 mb-8">
         <div className="absolute top-0 right-0 p-4">
-           <button className="text-stone-400 hover:text-stone-600 p-2 hover:bg-stone-100 rounded-full transition-colors">
+           <button className="text-stone-900 hover:bg-stone-100 p-2 border border-transparent hover:border-stone-900 transition-all">
              <MoreHorizontal className="w-5 h-5" />
            </button>
         </div>
         <div className="flex flex-col md:flex-row gap-6 items-start relative z-10">
-          <div className="w-32 h-32 rounded-xl overflow-hidden shadow-md bg-stone-100 shrink-0">
-            <img src={collection.coverUrl} alt={collection.title} className="w-full h-full object-cover" />
+          <div className="w-32 h-32 overflow-hidden border border-stone-900 shrink-0">
+            <img src={collection.coverUrl} alt={collection.title} className="w-full h-full object-cover grayscale" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-3xl font-serif font-bold text-stone-900">{collection.title}</h1>
               {collection.isPrivate && (
-                 <span className="bg-stone-100 text-stone-500 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Private</span>
+                 <span className="bg-stone-900 text-white text-xs font-mono px-2 py-0.5 uppercase tracking-widest">Private</span>
               )}
             </div>
-            <p className="text-stone-600 text-lg mb-4 max-w-2xl">{collection.description || 'No description provided.'}</p>
-            <div className="flex items-center gap-4 text-sm text-stone-500">
+            <p className="text-stone-600 text-lg mb-4 max-w-2xl font-serif italic border-l-2 border-stone-200 pl-3">{collection.description || 'No description provided.'}</p>
+            <div className="flex items-center gap-4 text-xs font-mono text-stone-500 uppercase tracking-wider">
               <span>{collection.itemCount} items</span>
-              <span className="w-1 h-1 bg-stone-300 rounded-full"></span>
+              <span className="text-stone-300">/</span>
               <span>Updated {collection.updatedAt}</span>
             </div>
           </div>
         </div>
-        {/* Background decoration */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-orange-50 rounded-full opacity-50 blur-3xl"></div>
       </div>
 
       {/* Action Tabs */}
-      <div className="flex items-center gap-1 mb-6 border-b border-fresco-200">
+      <div className="flex items-center gap-0 mb-6 border-b border-stone-900">
         <button
           onClick={() => setActiveTab('list')}
-          className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'list' ? 'border-stone-800 text-stone-900' : 'border-transparent text-stone-400 hover:text-stone-600'}`}
+          className={`px-6 py-3 text-sm font-bold uppercase tracking-widest border-r border-t border-l border-stone-900 transition-colors -mb-[1px] ${activeTab === 'list' ? 'bg-fresco-50 text-stone-900 border-b-transparent' : 'bg-white text-stone-400 hover:text-stone-900 border-t-transparent border-l-transparent border-r-transparent border-b-stone-900'}`}
         >
           Content
         </button>
         <button
           onClick={() => setActiveTab('add')}
-          className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'add' ? 'border-orange-500 text-orange-600' : 'border-transparent text-stone-400 hover:text-stone-600'}`}
+          className={`px-6 py-3 text-sm font-bold uppercase tracking-widest border-r border-t border-l border-stone-900 transition-colors -mb-[1px] ${activeTab === 'add' ? 'bg-fresco-50 text-orange-700 border-b-transparent' : 'bg-white text-stone-400 hover:text-stone-900 border-t-transparent border-l-transparent border-r-transparent border-b-stone-900'}`}
         >
           Add Items
         </button>
+        <div className="flex-1 h-[1px] bg-stone-900 self-end"></div>
       </div>
 
       {activeTab === 'list' ? (
         <div className="space-y-3">
            {collectionItems.length === 0 ? (
-             <div className="text-center py-16 bg-stone-50 rounded-xl border border-dashed border-stone-200">
-                <p className="text-stone-500 mb-4">This collection is empty.</p>
+             <div className="text-center py-16 bg-white border border-dashed border-stone-300">
+                <p className="text-stone-500 mb-4 font-serif italic">This collection is empty.</p>
                 <button 
                   onClick={() => setActiveTab('add')}
-                  className="px-4 py-2 bg-stone-800 text-white text-sm font-medium rounded-full hover:bg-stone-900 transition-colors"
+                  className="px-6 py-2 bg-stone-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-stone-900 border border-stone-900 transition-colors"
                 >
                   Add your first item
                 </button>
              </div>
            ) : (
              collectionItems.map(item => (
-               <div key={item.id} className="group flex items-start gap-4 p-4 bg-white rounded-xl border border-fresco-100 hover:border-fresco-300 hover:shadow-md transition-all">
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-stone-100 shrink-0 relative">
-                    <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
+               <div key={item.id} className="group flex items-start gap-4 p-4 bg-white border border-stone-200 hover:border-stone-900 transition-all">
+                  <div className="w-20 h-20 border border-stone-200 overflow-hidden shrink-0 relative">
+                    <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
                      <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                        {item.type === ContentType.ARTICLE ? <BookOpen className="w-5 h-5 text-white drop-shadow-sm" /> : <Play className="w-5 h-5 text-white drop-shadow-sm" />}
+                        {item.type === ContentType.ARTICLE ? <BookOpen className="w-5 h-5 text-white drop-shadow-md" /> : <Play className="w-5 h-5 text-white drop-shadow-md" />}
                      </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-bold text-stone-900 truncate pr-4">{item.title}</h3>
+                      <h3 className="font-serif font-bold text-stone-900 truncate pr-4 text-lg">{item.title}</h3>
                       <button 
                         onClick={() => handleRemoveItem(item.id)}
-                        className="text-stone-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+                        className="text-stone-300 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                    <p className="text-sm text-stone-500 mb-1">{item.publicationName}</p>
-                    <p className="text-xs text-stone-400 line-clamp-1">{item.description}</p>
+                    <p className="text-xs font-mono uppercase text-stone-500 mb-1">{item.publicationName}</p>
+                    <p className="text-sm text-stone-600 line-clamp-1 font-serif italic">{item.description}</p>
                   </div>
                </div>
              ))
@@ -163,20 +162,20 @@ export const CollectionDetail: React.FC<Props> = ({ collection, onBack, onUpdate
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2">
            
            {/* Add via URL */}
-           <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-              <h3 className="font-bold text-stone-800 mb-4 flex items-center gap-2">
+           <div className="bg-white p-6 border border-stone-900">
+              <h3 className="font-bold text-stone-900 mb-4 flex items-center gap-2 font-serif">
                 <LinkIcon className="w-4 h-4" />
                 Add from Link
               </h3>
               <form onSubmit={handleCreateFromUrl} className="flex gap-3">
                 <input 
                   type="url" 
-                  placeholder="Paste a URL (e.g. https://nytimes.com/...)"
+                  placeholder="Paste a URL..."
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
-                  className="flex-1 px-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-stone-200"
+                  className="flex-1 px-4 py-2.5 bg-white border border-stone-400 text-sm focus:outline-none focus:border-stone-900 font-mono"
                 />
-                <button type="submit" className="px-5 py-2.5 bg-stone-900 text-white font-medium rounded-xl text-sm hover:bg-stone-800 transition-colors">
+                <button type="submit" className="px-5 py-2.5 bg-stone-900 text-white font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-stone-900 border border-stone-900 transition-colors">
                   Add Link
                 </button>
               </form>
@@ -184,7 +183,7 @@ export const CollectionDetail: React.FC<Props> = ({ collection, onBack, onUpdate
 
            {/* Search Saved */}
            <div>
-              <h3 className="font-bold text-stone-800 mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-stone-900 mb-4 flex items-center gap-2 font-serif">
                 <Search className="w-4 h-4" />
                 Search Saved Content
               </h3>
@@ -195,27 +194,27 @@ export const CollectionDetail: React.FC<Props> = ({ collection, onBack, onUpdate
                   placeholder="Search your history..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-stone-200"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-400 text-sm focus:outline-none focus:border-stone-900 font-mono"
                  />
               </div>
               
               {searchQuery && (
                 <div className="space-y-2">
                   {searchResults.length === 0 ? (
-                    <p className="text-stone-500 text-sm italic">No results found.</p>
+                    <p className="text-stone-500 text-sm italic font-serif">No results found.</p>
                   ) : (
                     searchResults.slice(0, 3).map(item => (
-                      <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-stone-100">
+                      <div key={item.id} className="flex items-center justify-between p-3 bg-white border border-stone-200">
                          <div className="flex items-center gap-3 overflow-hidden">
-                            <img src={item.thumbnailUrl} className="w-10 h-10 rounded object-cover" alt="" />
+                            <img src={item.thumbnailUrl} className="w-10 h-10 object-cover grayscale" alt="" />
                             <div className="min-w-0">
-                               <p className="text-sm font-medium text-stone-900 truncate">{item.title}</p>
-                               <p className="text-xs text-stone-500">{item.publicationName}</p>
+                               <p className="text-sm font-bold font-serif text-stone-900 truncate">{item.title}</p>
+                               <p className="text-xs text-stone-500 font-mono uppercase">{item.publicationName}</p>
                             </div>
                          </div>
                          <button 
                            onClick={() => handleAddItem(item)}
-                           className="ml-4 px-3 py-1.5 bg-fresco-100 text-fresco-700 text-xs font-bold rounded-full hover:bg-fresco-200 transition-colors"
+                           className="ml-4 px-3 py-1.5 bg-stone-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-stone-900 border border-stone-900 transition-colors"
                          >
                            Add
                          </button>

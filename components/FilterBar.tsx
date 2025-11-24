@@ -11,43 +11,43 @@ interface Props {
 
 export const FilterBar: React.FC<Props> = ({ activeFilter, onFilterChange, searchQuery, onSearchChange }) => {
   return (
-    <div className="sticky top-0 z-30 bg-fresco-50/80 backdrop-blur-md border-b border-fresco-100 px-4 md:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="sticky top-0 z-30 bg-fresco-50 border-b border-stone-900 px-4 md:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
       
       {/* Search */}
       <div className="relative w-full md:w-96">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-4 w-4 text-stone-400" />
+          <Search className="h-4 w-4 text-stone-900" />
         </div>
         <input
           type="text"
-          placeholder="Search by title, friend, or publisher..."
+          placeholder="Search items..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="block w-full pl-10 pr-3 py-2.5 border-none rounded-xl leading-5 bg-white text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:bg-white shadow-sm transition-all"
+          className="block w-full pl-10 pr-3 py-2 border border-stone-400 rounded-none leading-5 bg-transparent text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-900 focus:ring-0 transition-all"
         />
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+      <div className="flex items-center gap-0 border border-stone-900 bg-white">
          <button
             onClick={() => onFilterChange('all')}
             className={`
-              px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
+              px-4 py-2 text-sm font-bold border-r border-stone-900 last:border-r-0 transition-all uppercase tracking-wide
               ${activeFilter === 'all' 
-                ? 'bg-stone-800 text-white shadow-md' 
-                : 'bg-white text-stone-600 hover:bg-fresco-100 border border-transparent'
+                ? 'bg-stone-900 text-white' 
+                : 'bg-white text-stone-500 hover:text-stone-900 hover:bg-fresco-100'
               }
             `}
           >
-            All Updates
+            All
           </button>
           <button
             onClick={() => onFilterChange(ContentType.ARTICLE)}
             className={`
-              px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2
+              px-4 py-2 text-sm font-bold border-r border-stone-900 last:border-r-0 transition-all uppercase tracking-wide
               ${activeFilter === ContentType.ARTICLE 
-                ? 'bg-blue-100 text-blue-800 border border-blue-200 shadow-sm' 
-                : 'bg-white text-stone-600 hover:bg-fresco-100'
+                ? 'bg-stone-900 text-white' 
+                : 'bg-white text-stone-500 hover:text-stone-900 hover:bg-fresco-100'
               }
             `}
           >
@@ -56,10 +56,10 @@ export const FilterBar: React.FC<Props> = ({ activeFilter, onFilterChange, searc
           <button
             onClick={() => onFilterChange(ContentType.VIDEO)}
             className={`
-              px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2
+              px-4 py-2 text-sm font-bold transition-all uppercase tracking-wide
               ${activeFilter === ContentType.VIDEO 
-                ? 'bg-orange-100 text-orange-800 border border-orange-200 shadow-sm' 
-                : 'bg-white text-stone-600 hover:bg-fresco-100'
+                ? 'bg-stone-900 text-white' 
+                : 'bg-white text-stone-500 hover:text-stone-900 hover:bg-fresco-100'
               }
             `}
           >
